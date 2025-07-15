@@ -15,7 +15,7 @@ function App() {
         <button onClick={openModal}>Зв'язатися з нами</button>
       </header>
 
-      <ContactForm isOpen={isModalOpen} onClose={closeModal} />
+      <Modal isOpen={isModalOpen} onClose={closeModal} />
     </div>
   );
 }
