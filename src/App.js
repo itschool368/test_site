@@ -1,45 +1,54 @@
-import React, { useState } from 'react'; // Імпортуємо React і useState
-import './App.css'; // Стилі для додатку
-import Modal from './components/Modal'; // Імпортуємо компонент Modal
+import React, { useState } from 'react';
+import './App.css';
+import Modal from './components/Modal';
 
 const App = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false); // Стан для відкриття/закриття модального вікна
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  // Функція для збереження номера
-  const savePhoneNumber = async (phoneNumber) => {
-    if (!phoneNumber.trim()) {  // Перевіряємо, чи ввели номер
-      alert('Будь ласка, введіть номер телефону'); // Якщо номер порожній, показуємо попередження
-      return;
+  const saveData = async (formData) => {
+  try {
+    setIsLoading(true);
+    
+    const response = await fetch('http://localhost:3001/save-data', {
+      method: 'POST',
+      headers: { 
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        name: formData.name.trim(),
+        phoneNumber: formData.phoneNumber.toString().trim()
+      }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || data.dbMessage || 'Помилка сервера');
     }
 
-    try {
-      const response = await fetch('http://localhost:3001/save-phone', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ phoneNumber }),
-      });
+    alert(`Дані збережено! ID: ${data.id}`);
+    setIsModalOpen(false);
+    return data;
     
-      if (!response.ok) throw new Error('Не вдалося зберегти номер');
-    
-      const data = await response.json();
-      alert(data.message || 'Номер успішно збережено!');
-      setIsModalOpen(false);
-    } catch (error) {
-      alert(error.message || 'Щось пішло не так. Спробуйте ще раз.');
-    }
-    
-  };
-
+  } catch (error) {
+    console.error('Помилка збереження:', error);
+    alert(error.message || 'Помилка при збереженні даних');
+    throw error;
+  } finally {
+    setIsLoading(false);
+  }
+};
   return (
     <div className="App">
-      {/* Кнопка для відкриття модального вікна */}
-      <button onClick={() => setIsModalOpen(true)}>Залишити номер</button>
-
-      {/* Модальне вікно */}
+      <button onClick={() => setIsModalOpen(true)}>Залишити дані</button>
+      
       <Modal
-        isOpen={isModalOpen} // Чи відкрито модальне вікно
-        onClose={() => setIsModalOpen(false)} // Закриваємо модальне вікно
-        onSave={savePhoneNumber} // Функція для збереження номера
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSave={saveData}
+        isLoading={isLoading}
       />
     </div>
   );

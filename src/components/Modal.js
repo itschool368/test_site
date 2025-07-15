@@ -1,43 +1,82 @@
-// src/components/Modal.js
-import React, { useState } from 'react';
+import React, { useState } from 'react'; // Додано імпорт useState
 import './Modal.css';
 
-function Modal({ isOpen, onClose, onSave }) {
-  const [phoneNumber, setPhoneNumber] = useState('');
 
-  if (!isOpen) return null;  // Якщо вікно не відкрите, нічого не рендеримо
-const handleSave = async () => {
-  if (!phoneNumber.trim()) {
-    alert('Введіть номер телефону');
-    return;
-  }
+const ContactForm = ({ isOpen, onClose }) => {
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [message, setMessage] = useState('');
+  const [response, setResponse] = useState('');
 
-  try {
-    await onSave(phoneNumber); // Чекаємо завершення onSave
-    setPhoneNumber(''); // Очищаємо поле
-    onClose(); // Закриваємо модалку
-  } catch (error) {
-    console.error("Помилка при збереженні номеру", error);
-    // Помилка вже виведена в alert у App.js, тому тут можна нічого не робити
-    // Або додатково обробити її тут
-  }
-};
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const data = {
+      name: name,
+      phone: phone,
+      message: message
+    };
+
+    try {
+      const res = await fetch('https://13.53.200.62/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+
+      const result = await res.json();
+      setResponse(result.message || 'Повідомлення надіслано!');
+
+      setName('');
+      setPhone('');
+      setMessage('');
+    } catch (err) {
+      console.error(err);
+      setResponse('❌ Помилка при надсиланні');
+    }
+  };
+
+  if (!isOpen) return null;
+
   return (
     <div className="modal-overlay">
-      <div className="modal">
+      <div className="modal-content">
         <button className="close-button" onClick={onClose}>×</button>
-        <h2>Залиште свій номер</h2>
-        <input
-          type="text"
-          placeholder="Ваш номер телефону"
-          value={phoneNumber}
-          onChange={(e) => setPhoneNumber(e.target.value)}
-          className="modal-input"
-        />
-        <button className="save-button" onClick={handleSave}>Зберегти</button>
+        <form className="contact-form" onSubmit={handleSubmit}>
+          <div>
+            <label>Ім'я:</label>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+          </div>
+          <div>
+            <label>Номер телефону:</label>
+            <input
+              type="tel"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              required
+            />
+          </div>
+          <div>
+            <label>Коментар:</label>
+            <textarea
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              required
+            />
+          </div>
+          <button type="submit">Відправити</button>
+          {response && <p style={{ marginTop: '10px' }}>{response}</p>}
+        </form>
       </div>
     </div>
   );
-}
+};
 
 export default Modal;
