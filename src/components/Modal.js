@@ -2,7 +2,7 @@ import React, { useState } from 'react'; // Додано імпорт useState
 import './Modal.css';
 
 
-const Modal = ({ isOpen, onClose }) => {
+const ContactForm = ({ isOpen, onClose }) => {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [message, setMessage] = useState('');
@@ -18,7 +18,7 @@ const Modal = ({ isOpen, onClose }) => {
     };
 
     try {
-      const res = await fetch('http://13.53.200.62:3001/contact', {
+      const res = await fetch('https://13.53.200.62/contact', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -32,10 +32,8 @@ const Modal = ({ isOpen, onClose }) => {
       setName('');
       setPhone('');
       setMessage('');
-    } catch (error) {
-      console.error('Error:', error);
-      // Show user-friendly error message to the user
-    
+    } catch (err) {
+      console.error(err);
       setResponse('❌ Помилка при надсиланні');
     }
   };
