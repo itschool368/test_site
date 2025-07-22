@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/contact",
+      "destination": "http://13.53.200.62/contact"
+    }
+  ]
+}
