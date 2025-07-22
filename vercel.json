@@ -1,11 +1,9 @@
-// next.config.js (якщо Next.js)
-module.exports = {
-  async rewrites() {
-    return [
-      {
-        source: '/api/contact',
-        destination: 'http://13.53.200.62/contact',
-      },
-    ];
-  },
-};
+{
+  "version": 2,
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "http://13.53.200.62/contact"
+    }
+  ]
+}
