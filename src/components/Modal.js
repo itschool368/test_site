@@ -2,7 +2,7 @@ import React, { useState } from 'react'; // Додано імпорт useState
 import './Modal.css';
 
 
-const ContactForm = ({ isOpen, onClose }) => {
+const Modal = ({ isOpen, onClose }) => {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [message, setMessage] = useState('');
