@@ -18,7 +18,7 @@ const Modal = ({ isOpen, onClose }) => {
     };
 
     try {
-      const res = await fetch('https://13.53.200.62:3001/contact', {
+      const res = await fetch('http://13.53.200.62:3001/contact', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -32,8 +32,10 @@ const Modal = ({ isOpen, onClose }) => {
       setName('');
       setPhone('');
       setMessage('');
-    } catch (err) {
-      console.error(err);
+    } catch (error) {
+      console.error('Error:', error);
+      // Show user-friendly error message to the user
+    
       setResponse('❌ Помилка при надсиланні');
     }
   };
