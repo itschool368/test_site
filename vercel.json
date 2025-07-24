@@ -3,7 +3,7 @@
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "http://13.53.200.62/contact"
+      "destination": "https://13.53.200.62/contact"
     }
   ]
 }
