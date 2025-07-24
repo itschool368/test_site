@@ -10,7 +10,7 @@ const Modal = ({ isOpen, onClose }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'; 
     const data = {
       name: name,
       phone: phone,
