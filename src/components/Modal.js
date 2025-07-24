@@ -18,7 +18,7 @@ const Modal = ({ isOpen, onClose }) => {
     };
 
     try {
-      const res = await fetch('https://digital-age.duckdns.org/contact', {
+      const res = await fetch('https://digital-age.duckdns.org:3001/contact', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
