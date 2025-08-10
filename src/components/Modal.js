@@ -18,7 +18,7 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
     };
 
     try {
-      const res = await fetch('https://ec2-13-53-200-62.eu-north-1.compute.amazonaws.com:3001/contact', {
+      const res = await fetch('http://ec2-13-53-200-62.eu-north-1.compute.amazonaws.com:3001/contact', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
